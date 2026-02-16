@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Clock</title>
+    <link href="https://fonts.cdnfonts.com/css/digital-7-mono" rel="stylesheet">
+    
+    <style>
+        body {
+            background-color: #000000;
+            color: #ff0000;
+            font-family: 'Digital-7 Mono', monospace;
+            margin: 0;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .clock-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            padding: 2vh;
+            box-sizing: border-box;
+        }
+
+        .display-layer {
+            position: relative;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .active {
+            position: relative;
+            z-index: 2;
+            color: #ff0000;
+            font-style: italic;
+            text-shadow: none;
+        }
+
+        .date-section {
+            font-size: 14vh;
+            letter-spacing: 0.8vw;
+            margin-bottom: 1vh;
+        }
+
+        .day-section {
+            font-size: 10vh;
+            letter-spacing: 1.5vw;
+            text-transform: uppercase;
+            margin-bottom: 4vh;
+            padding: 1vh 3vw;
+        }
+
+        .time-section {
+            font-size: 32vh;
+            letter-spacing: 1.5vw;
+            margin-bottom: 6vh;
+            line-height: 1;
+        }
+
+        .info-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 2vh 4vw;
+            margin-top: 2vh;
+            gap: 1vh;
+        }
+        
+        .info-active {
+            color: #ff0000;
+            font-style: italic;
+            font-size: 8vh;
+            line-height: 1.4;
+            white-space: pre;
+            text-shadow: none;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="clock-container">
+        
+        <div class="display-layer date-section">
+            <div class="active" id="date">00-00-0000</div>
+        </div>
+
+        <div class="display-layer day-section">
+            <div class="active" id="day">DAY</div>
+        </div>
+        
+        <div class="display-layer time-section">
+            <div class="active" id="time">00:00:00 PM</div>
+        </div>
+
+        <div class="info-wrapper">
+            <div class="info-active">MISSION IMPOSSIBLE : 161.3_KM/PH</div>
+            <div class="info-active">CURRENT SPEED      : 116.3_KM/PH</div>
+        </div>
+    </div>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+
+            const day = String(now.getDate()).padStart(2, '0');
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const year = now.getFullYear();
+            document.getElementById('date').innerText = `${day}-${month}-${year}`;
+
+            const days = ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"];
+            document.getElementById('day').innerText = days[now.getDay()];
+
+            let hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            
+            hours = hours % 12;
+            hours = hours ? hours : 12; 
+            const strHours = String(hours).padStart(2, '0');
+
+            document.getElementById('time').innerText = `${strHours}:${minutes}:${seconds} ${ampm}`;
+        }
+
+        setInterval(updateClock, 1000);
+        updateClock();
+    </script>
+
+</body>
+</html>
