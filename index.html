@@ -42,37 +42,37 @@
             text-shadow: none;
         }
         .date-section {
-            font-size: 14vh;
-            letter-spacing: 0.8vw;
-            margin-bottom: 1vh;
+            font-size: 9vh;
+            letter-spacing: 0.5vw;
+            margin-bottom: 0.5vh;
         }
         .day-section {
-            font-size: 10vh;
-            letter-spacing: 1.5vw;
+            font-size: 6vh;
+            letter-spacing: 1vw;
             text-transform: uppercase;
-            margin-bottom: 4vh;
-            padding: 1vh 3vw;
+            margin-bottom: 2vh;
+            padding: 0.5vh 2vw;
         }
         .time-section {
-            font-size: 32vh;
-            letter-spacing: 1.5vw;
-            margin-bottom: 6vh;
+            font-size: 20vh;
+            letter-spacing: 1vw;
+            margin-bottom: 3vh;
             line-height: 1;
         }
         .info-wrapper {
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-            padding: 2vh 4vw;
-            margin-top: 2vh;
-            gap: 1vh;
+            padding: 1vh 3vw;
+            margin-top: 1vh;
+            gap: 0.5vh;
         }
         
         .info-active {
             color: #ff0000;
             font-style: italic;
-            font-size: 8vh;
-            line-height: 1.4;
+            font-size: 5vh;
+            line-height: 1.3;
             white-space: pre;
             text-shadow: none;
         }
@@ -101,6 +101,11 @@
 
         .fullscreen-btn:active {
             transform: scale(0.95);
+        }
+
+        .fullscreen-btn.hidden {
+            opacity: 0;
+            pointer-events: none;
         }
     </style>
 </head>
@@ -151,24 +156,18 @@
             
             if (!document.fullscreenElement) {
                 document.documentElement.requestFullscreen().then(() => {
-                    btn.innerText = 'EXIT FULLSCREEN';
+                    btn.classList.add('hidden');
                 }).catch(err => {
                     console.log('Error attempting to enable fullscreen:', err);
-                });
-            } else {
-                document.exitFullscreen().then(() => {
-                    btn.innerText = 'FULLSCREEN';
                 });
             }
         }
 
-        // Update button text if fullscreen is exited via ESC key
+        // Show button when exiting fullscreen
         document.addEventListener('fullscreenchange', () => {
             const btn = document.getElementById('fullscreenBtn');
             if (!document.fullscreenElement) {
-                btn.innerText = 'FULLSCREEN';
-            } else {
-                btn.innerText = 'EXIT FULLSCREEN';
+                btn.classList.remove('hidden');
             }
         });
 
