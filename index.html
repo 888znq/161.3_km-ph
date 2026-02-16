@@ -19,7 +19,6 @@
             justify-content: center;
             align-items: center;
         }
-
         .clock-container {
             display: flex;
             flex-direction: column;
@@ -30,13 +29,11 @@
             padding: 2vh;
             box-sizing: border-box;
         }
-
         .display-layer {
             position: relative;
             display: inline-block;
             text-align: center;
         }
-
         .active {
             position: relative;
             z-index: 2;
@@ -44,13 +41,11 @@
             font-style: italic;
             text-shadow: none;
         }
-
         .date-section {
             font-size: 14vh;
             letter-spacing: 0.8vw;
             margin-bottom: 1vh;
         }
-
         .day-section {
             font-size: 10vh;
             letter-spacing: 1.5vw;
@@ -58,14 +53,12 @@
             margin-bottom: 4vh;
             padding: 1vh 3vw;
         }
-
         .time-section {
             font-size: 32vh;
             letter-spacing: 1.5vw;
             margin-bottom: 6vh;
             line-height: 1;
         }
-
         .info-wrapper {
             display: flex;
             flex-direction: column;
@@ -84,16 +77,43 @@
             text-shadow: none;
         }
 
+        .fullscreen-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background-color: rgba(255, 0, 0, 0.2);
+            border: 2px solid #ff0000;
+            color: #ff0000;
+            font-family: 'Digital-7 Mono', monospace;
+            font-size: 18px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .fullscreen-btn:hover {
+            background-color: rgba(255, 0, 0, 0.4);
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+        }
+
+        .fullscreen-btn:active {
+            transform: scale(0.95);
+        }
     </style>
 </head>
 <body>
+    <button class="fullscreen-btn" id="fullscreenBtn" onclick="toggleFullscreen()">
+        FULLSCREEN
+    </button>
 
     <div class="clock-container">
         
         <div class="display-layer date-section">
             <div class="active" id="date">00-00-0000</div>
         </div>
-
         <div class="display-layer day-section">
             <div class="active" id="day">DAY</div>
         </div>
@@ -101,25 +121,20 @@
         <div class="display-layer time-section">
             <div class="active" id="time">00:00:00 PM</div>
         </div>
-
         <div class="info-wrapper">
             <div class="info-active">MISSION IMPOSSIBLE : 161.3_KM/PH</div>
             <div class="info-active">CURRENT SPEED      : 116.3_KM/PH</div>
         </div>
     </div>
-
     <script>
         function updateClock() {
             const now = new Date();
-
             const day = String(now.getDate()).padStart(2, '0');
             const month = String(now.getMonth() + 1).padStart(2, '0');
             const year = now.getFullYear();
             document.getElementById('date').innerText = `${day}-${month}-${year}`;
-
             const days = ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"];
             document.getElementById('day').innerText = days[now.getDay()];
-
             let hours = now.getHours();
             const minutes = String(now.getMinutes()).padStart(2, '0');
             const seconds = String(now.getSeconds()).padStart(2, '0');
@@ -128,13 +143,37 @@
             hours = hours % 12;
             hours = hours ? hours : 12; 
             const strHours = String(hours).padStart(2, '0');
-
             document.getElementById('time').innerText = `${strHours}:${minutes}:${seconds} ${ampm}`;
         }
+
+        function toggleFullscreen() {
+            const btn = document.getElementById('fullscreenBtn');
+            
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().then(() => {
+                    btn.innerText = 'EXIT FULLSCREEN';
+                }).catch(err => {
+                    console.log('Error attempting to enable fullscreen:', err);
+                });
+            } else {
+                document.exitFullscreen().then(() => {
+                    btn.innerText = 'FULLSCREEN';
+                });
+            }
+        }
+
+        // Update button text if fullscreen is exited via ESC key
+        document.addEventListener('fullscreenchange', () => {
+            const btn = document.getElementById('fullscreenBtn');
+            if (!document.fullscreenElement) {
+                btn.innerText = 'FULLSCREEN';
+            } else {
+                btn.innerText = 'EXIT FULLSCREEN';
+            }
+        });
 
         setInterval(updateClock, 1000);
         updateClock();
     </script>
-
 </body>
 </html>
