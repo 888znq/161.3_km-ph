@@ -33,7 +33,7 @@
         }
 
         body {
-            background-color: #2e4a7a;
+            background-color: #000000;
             font-family: 'Digital-7 Mono', monospace;
             width: 100vw;
             height: 100dvh;
@@ -49,8 +49,8 @@
             width: 100%;
             height: 100%;
             padding: 3vmin;
-            background-color: #2e4a7a;
-            border: 1px solid #d4885a;
+            background-color: #000000;
+            border: 1px solid #ff0000;
         }
 
         .clock-container::before,
@@ -58,7 +58,7 @@
             content: '';
             position: absolute;
             width: 4vmin; height: 4vmin;
-            border-color: #e8a070;
+            border-color: #ff0000;
             border-style: solid;
         }
         .clock-container::before {
@@ -80,7 +80,7 @@
             content: '';
             position: absolute;
             width: 4vmin; height: 4vmin;
-            border-color: #e8a070;
+            border-color: #ff0000;
             border-style: solid;
         }
         .inner-corners::before {
@@ -96,7 +96,7 @@
             width: 88%;
             height: 1px;
             flex-shrink: 0;
-            background-color: #d4885a;
+            background-color: #ff0000;
         }
 
         .display-layer {
@@ -111,7 +111,7 @@
         .active {
             position: relative;
             z-index: 2;
-            color: #f0a880;
+            color: #ff0000;
             font-style: italic;
             display: inline-block;
         }
@@ -123,7 +123,7 @@
         }
         .date-section .active,
         .day-section .active {
-            color: #e89878;
+            color: #ff0000;
         }
 
         .time-section {
@@ -142,7 +142,7 @@
         }
 
         .info-active {
-            color: #f0a880;
+            color: #ff0000;
             font-style: italic;
             font-size: min(4.8vw, 4.3vh);
             line-height: 1.4;
@@ -154,7 +154,7 @@
         }
 
         .info-mission {
-            color: #f5b8a0;
+            color: #ff0000;
         }
 
         #currentSpeed {
@@ -165,9 +165,9 @@
             position: fixed;
             top: 3vmin; right: 3vmin;
             z-index: 10000;
-            background-color: #2e4a7a;
-            border: 1px solid #d4885a;
-            color: #f0a880;
+            background-color: #000000;
+            border: 1px solid #ff0000;
+            color: #ff0000;
             font-family: 'Digital-7 Mono', monospace;
             font-size: min(3.5vw, 18px);
             padding: 0.8vmin 1.8vmin;
@@ -177,7 +177,7 @@
             border-radius: 2px;
         }
         .fullscreen-btn:hover {
-            background-color: #3a5a90;
+            background-color: #1a0000;
         }
         .fullscreen-btn.hidden { opacity: 0; pointer-events: none; }
 
