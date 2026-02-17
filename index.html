@@ -9,7 +9,6 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        /* scanline grid */
         body::before {
             content: '';
             position: fixed;
@@ -34,7 +33,7 @@
         }
 
         body {
-            background-color: #9aa08e;
+            background-color: #2e4a7a;
             font-family: 'Digital-7 Mono', monospace;
             width: 100vw;
             height: 100dvh;
@@ -50,17 +49,16 @@
             width: 100%;
             height: 100%;
             padding: 3vmin;
-            background-color: #9aa08e;
-            border: 1px solid #7a8070;
+            background-color: #2e4a7a;
+            border: 1px solid #d4885a;
         }
 
-        /* corner brackets */
         .clock-container::before,
         .clock-container::after {
             content: '';
             position: absolute;
             width: 4vmin; height: 4vmin;
-            border-color: #2a2e26;
+            border-color: #e8a070;
             border-style: solid;
         }
         .clock-container::before {
@@ -82,7 +80,7 @@
             content: '';
             position: absolute;
             width: 4vmin; height: 4vmin;
-            border-color: #2a2e26;
+            border-color: #e8a070;
             border-style: solid;
         }
         .inner-corners::before {
@@ -94,12 +92,11 @@
             border-width: 0 0 2px 2px;
         }
 
-        /* plain solid rules */
         .rule {
             width: 88%;
             height: 1px;
             flex-shrink: 0;
-            background-color: #7a8070;
+            background-color: #d4885a;
         }
 
         .display-layer {
@@ -114,7 +111,7 @@
         .active {
             position: relative;
             z-index: 2;
-            color: #252820;
+            color: #f0a880;
             font-style: italic;
             display: inline-block;
         }
@@ -126,7 +123,7 @@
         }
         .date-section .active,
         .day-section .active {
-            color: #3a3e32;
+            color: #e89878;
         }
 
         .time-section {
@@ -145,7 +142,7 @@
         }
 
         .info-active {
-            color: #252820;
+            color: #f0a880;
             font-style: italic;
             font-size: min(4.8vw, 4.3vh);
             line-height: 1.4;
@@ -157,7 +154,7 @@
         }
 
         .info-mission {
-            color: #2a2e26;
+            color: #f5b8a0;
         }
 
         #currentSpeed {
@@ -168,9 +165,9 @@
             position: fixed;
             top: 3vmin; right: 3vmin;
             z-index: 10000;
-            background-color: #9aa08e;
-            border: 1px solid #7a8070;
-            color: #2a2e26;
+            background-color: #2e4a7a;
+            border: 1px solid #d4885a;
+            color: #f0a880;
             font-family: 'Digital-7 Mono', monospace;
             font-size: min(3.5vw, 18px);
             padding: 0.8vmin 1.8vmin;
@@ -180,7 +177,7 @@
             border-radius: 2px;
         }
         .fullscreen-btn:hover {
-            background-color: #8a9080;
+            background-color: #3a5a90;
         }
         .fullscreen-btn.hidden { opacity: 0; pointer-events: none; }
 
