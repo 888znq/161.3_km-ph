@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digital Clock Edge-to-Edge</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Dynamic Edge Clock</title>
     <link href="https://fonts.cdnfonts.com/css/digital-7-mono" rel="stylesheet">
     
     <style>
@@ -12,9 +12,9 @@
             color: #ff0000;
             font-family: 'Digital-7 Mono', monospace;
             margin: 0;
-            /* Fixed resolution 1200x1920 */
-            width: 1200px;
-            height: 1920px;
+            padding: 0;
+            width: 100vw;
+            height: 100dvh;
             overflow: hidden;
         }
 
@@ -22,13 +22,12 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            /* Distribute space evenly across the full height */
-            justify-content: space-evenly; 
+            justify-content: space-evenly;
             width: 100%;
             height: 100%;
-            padding: 20px; /* Minimal padding to prevent text touching physical bezel */
+            padding: 2vmin;
             box-sizing: border-box;
-            /* Removed border and shadows for edge-to-edge look */
+            border: clamp(1px, 0.4vmin, 3px) solid #ff0000;
         }
 
         .display-layer {
@@ -45,73 +44,69 @@
             z-index: 2;
             color: #ff0000;
             font-style: italic;
-            text-shadow: 0 0 20px rgba(255, 0, 0, 0.4); /* Added slight glow */
         }
 
         .date-section {
-            font-size: 110px; /* Increased size */
-            letter-spacing: 10px;
+            font-size: min(13vw, 11vh);
+            letter-spacing: 0.5vmin;
             font-variant-numeric: tabular-nums;
         }
 
         .day-section {
-            font-size: 110px; /* Increased size */
-            letter-spacing: 10px;
+            font-size: min(13vw, 11vh);
+            letter-spacing: 0.5vmin;
             text-transform: uppercase;
             font-variant-numeric: tabular-nums;
         }
 
         .time-section {
-            font-size: 220px; /* Massively increased size */
-            letter-spacing: 10px;
+            font-size: min(22vw, 26vh);
+            letter-spacing: 0.3vmin;
             line-height: 1;
         }
 
         .info-wrapper {
             display: flex;
             flex-direction: column;
-            align-items: center; /* Centered for symmetrical edge-to-edge look */
+            align-items: center;
             justify-content: center;
             width: 100%;
-            gap: 30px;
-            margin-top: 50px;
-            border-top: 2px solid #330000; /* Subtle separator */
-            padding-top: 50px;
+            gap: 2vh;
+            margin-top: 0;
+            padding-top: 0;
         }
         
         .info-active {
             color: #ff0000;
             font-style: italic;
-            font-size: 65px; /* Increased size */
+            font-size: min(9vw, 8vh);
             line-height: 1.4;
             white-space: pre;
-            text-shadow: none;
             font-variant-numeric: tabular-nums;
-            letter-spacing: 4px;
+            letter-spacing: 0.2vmin;
+            text-align: center;
         }
 
-        /* Fullscreen Button Styles */
         .fullscreen-btn {
             position: fixed;
-            top: 40px;
-            right: 40px;
+            top: 5vmin;
+            right: 5vmin;
             z-index: 1000;
-            background-color: rgba(0, 0, 0, 0.5);
-            border: 2px solid #ff0000;
+            background-color: rgba(0, 0, 0, 0.8);
+            border: 1px solid #ff0000;
             color: #ff0000;
             font-family: 'Digital-7 Mono', monospace;
-            font-size: 24px;
-            padding: 15px 30px;
+            font-size: min(4vw, 20px);
+            padding: 1vmin 2vmin;
             cursor: pointer;
             transition: all 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 2px;
-            border-radius: 8px;
+            border-radius: 4px;
         }
 
         .fullscreen-btn:hover {
             background-color: rgba(255, 0, 0, 0.2);
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
         }
 
         .fullscreen-btn.hidden {
@@ -119,12 +114,10 @@
             pointer-events: none;
         }
 
-        /* Span for speed value to make it easier to click */
-        #currentSpeed {
-            transition: color 0.2s;
-        }
-        #currentSpeed:hover {
-            text-shadow: 0 0 15px rgba(255, 0, 0, 0.8);
+        @media (max-width: 600px) {
+            .info-active {
+                white-space: normal;
+            }
         }
     </style>
 </head>
@@ -135,7 +128,7 @@
 
     <div class="clock-container">
         
-        <div style="display:flex; flex-direction:column; gap: 20px; width:100%;">
+        <div style="display:flex; flex-direction:column; gap: 1vh; width:100%;">
             <div class="display-layer date-section">
                 <div class="active" id="date">00-00-0000</div>
             </div>
@@ -150,7 +143,7 @@
 
         <div class="info-wrapper">
             <div class="info-active">MISSION IMPOSSIBLE : 161.3_KM/PH</div>
-            <div class="info-active" id="currentSpeed" onclick="editSpeed()" style="cursor: pointer;">CURRENT SPEED      : <span id="speedValue">116.3</span>_KM/PH</div>
+            <div class="info-active" id="currentSpeed" onclick="editSpeed()" style="cursor: pointer;">CURRENT SPEED : <span id="speedValue">116.3</span>_KM/PH</div>
         </div>
     </div>
 
