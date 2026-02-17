@@ -8,15 +8,15 @@
 
     <style>
         :root {
-            --primary:    #00e5ff;
-            --primary-dk: #00b8cc;
-            --dim:        #007a8a;
-            --faint:      #003a42;
-            --bg:         #020c10;
-            --glow-soft:  rgba(0,229,255,0.15);
-            --glow-mid:   rgba(0,229,255,0.45);
-            --glow-hard:  rgba(0,229,255,0.9);
-            --depth:      #001820;
+            --primary:    #ffb300;
+            --primary-dk: #cc8c00;
+            --dim:        #7a5200;
+            --faint:      #2e1f00;
+            --bg:         #0a0600;
+            --glow-soft:  rgba(255,179,0,0.12);
+            --glow-mid:   rgba(255,179,0,0.40);
+            --glow-hard:  rgba(255,200,60,0.90);
+            --white-line: #ffe066;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -27,15 +27,10 @@
             width: 100vw;
             height: 100dvh;
             overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            /* deep perspective space */
-            perspective: 1200px;
             background-image:
                 radial-gradient(ellipse at 50% 40%,
-                    rgba(0,50,70,0.7) 0%,
-                    rgba(2,12,16,1) 65%);
+                    rgba(60,30,0,0.65) 0%,
+                    rgba(10,6,0,1) 65%);
         }
 
         /* scanlines */
@@ -49,21 +44,12 @@
                 0deg,
                 transparent,
                 transparent 3px,
-                rgba(0,0,0,0.15) 3px,
-                rgba(0,0,0,0.15) 4px
+                rgba(0,0,0,0.14) 3px,
+                rgba(0,0,0,0.14) 4px
             );
         }
 
-        /* ── 3D scene wrapper — rotates on mouse move ── */
-        .scene {
-            width: 100vw;
-            height: 100dvh;
-            transform-style: preserve-3d;
-            transition: transform 0.08s linear;
-            will-change: transform;
-        }
-
-        /* ── panel — the face of the clock ── */
+        /* outer frame */
         .clock-container {
             position: relative;
             display: flex;
@@ -73,28 +59,17 @@
             width: 100%;
             height: 100%;
             padding: 3vmin;
-            transform-style: preserve-3d;
 
-            /* panel border */
             border: 1px solid var(--dim);
-
-            /* layered box-shadow creates floating depth illusion:
-               1. tight dark offset = physical thickness
-               2. medium cyan = glow lift
-               3. wide soft = ambient halo */
             box-shadow:
-                4px 8px 0px 0px var(--depth),
-                6px 12px 0px 0px rgba(0,10,16,0.9),
-                8px 16px 0px 0px rgba(0,5,10,0.7),
-                0 20px 60px 0px rgba(0,0,0,0.8),
-                0 0 40px 4px var(--glow-soft),
-                inset 0 0 60px rgba(0,229,255,0.03);
+                0 0 2vmin var(--glow-soft),
+                inset 0 0 60px rgba(255,179,0,0.03);
 
             background: linear-gradient(
                 160deg,
-                rgba(0,35,48,0.95) 0%,
-                rgba(2,12,16,0.98) 50%,
-                rgba(0,20,30,0.95) 100%
+                rgba(30,15,0,0.95) 0%,
+                rgba(10,6,0,0.98)  50%,
+                rgba(20,10,0,0.95) 100%
             );
         }
 
@@ -156,8 +131,6 @@
                 transparent 100%
             );
             box-shadow: 0 0 8px var(--glow-soft);
-            /* rule pops slightly toward viewer */
-            transform: translateZ(2px);
         }
 
         .display-layer {
@@ -169,28 +142,19 @@
             text-align: center;
         }
 
-        /* ── 3D extruded text base ── */
         .active {
             position: relative;
             z-index: 2;
             color: var(--primary);
             font-style: italic;
-            /* translateZ lifts text off the panel surface */
-            transform: translateZ(18px);
             display: inline-block;
-            /* multi-layer text-shadow = extruded depth + glow */
             text-shadow:
-                /* extrusion steps — dark stacked layers going "back" */
-                1px 1px 0px var(--primary-dk),
-                2px 2px 0px var(--dim),
-                3px 3px 0px var(--faint),
-                4px 4px 0px rgba(0,20,28,0.8),
-                /* glow layers on top */
                 0 0 0.8vmin var(--glow-hard),
                 0 0 2.5vmin var(--glow-mid),
                 0 0 6vmin   var(--glow-soft);
         }
 
+        /* date & day — slightly dimmer */
         .date-section, .day-section {
             font-size: min(10vw, 8.5vh);
             letter-spacing: 0.5vmin;
@@ -198,37 +162,26 @@
         }
         .date-section .active,
         .day-section .active {
-            opacity: 0.75;
-            transform: translateZ(10px);
+            opacity: 0.72;
             text-shadow:
-                1px 1px 0px var(--dim),
-                2px 2px 0px var(--faint),
                 0 0 0.5vmin var(--glow-mid),
                 0 0 2vmin   var(--glow-soft);
         }
 
-        /* ── time — deepest 3D extrusion ── */
+        /* main time */
         .time-section {
             font-size: min(16.9vw, 20vh);
             letter-spacing: 0.3vmin;
             line-height: 1;
         }
         .time-section .active {
-            transform: translateZ(30px);
             text-shadow:
-                1px  1px 0px var(--primary-dk),
-                2px  2px 0px var(--dim),
-                3px  3px 0px var(--faint),
-                4px  4px 0px rgba(0,20,28,0.9),
-                5px  5px 0px rgba(0,10,18,0.7),
-                6px  6px 0px rgba(0,5,12,0.5),
-                /* glow */
                 0 0 1vmin  var(--glow-hard),
                 0 0 3vmin  var(--glow-mid),
                 0 0 8vmin  var(--glow-soft);
         }
 
-        /* ── info section ── */
+        /* info section */
         .info-wrapper {
             display: flex;
             flex-direction: column;
@@ -247,39 +200,31 @@
             font-variant-numeric: tabular-nums;
             letter-spacing: 0.2vmin;
             text-align: center;
-            transform: translateZ(14px);
             display: block;
             text-shadow:
-                1px 1px 0px var(--dim),
-                2px 2px 0px var(--faint),
                 0 0 0.6vmin var(--glow-hard),
                 0 0 2vmin   var(--glow-mid);
         }
 
+        /* mission line — bright warm white */
         .info-mission {
-            color: #e8f9ff;
-            opacity: 0.9;
+            color: var(--white-line);
+            opacity: 0.92;
             text-shadow:
-                1px 1px 0px rgba(0,120,150,0.6),
-                2px 2px 0px rgba(0,60,80,0.5),
-                0 0 0.5vmin rgba(255,255,255,0.8),
+                0 0 0.5vmin rgba(255,230,100,0.9),
                 0 0 2vmin   var(--glow-mid),
                 0 0 6vmin   var(--glow-soft);
         }
 
+        /* breathing glow on current speed */
         @keyframes breathe {
             0%, 100% {
                 text-shadow:
-                    1px 1px 0px var(--dim),
-                    2px 2px 0px var(--faint),
                     0 0 0.6vmin var(--glow-hard),
                     0 0 2vmin   var(--glow-mid);
             }
             50% {
                 text-shadow:
-                    1px 1px 0px var(--primary-dk),
-                    2px 2px 0px var(--dim),
-                    3px 3px 0px var(--faint),
                     0 0 1.2vmin var(--glow-hard),
                     0 0 4vmin   var(--glow-mid),
                     0 0 10vmin  var(--glow-soft);
@@ -295,7 +240,7 @@
             position: fixed;
             top: 3vmin; right: 3vmin;
             z-index: 10000;
-            background-color: rgba(0,20,26,0.9);
+            background-color: rgba(10,6,0,0.9);
             border: 1px solid var(--dim);
             color: var(--dim);
             font-family: 'Digital-7 Mono', monospace;
@@ -323,36 +268,33 @@
 
     <button class="fullscreen-btn" id="fullscreenBtn" onclick="toggleFullscreen()">FULLSCREEN</button>
 
-    <div class="scene" id="scene">
-        <div class="clock-container">
-            <div class="inner-corners"></div>
+    <div class="clock-container">
+        <div class="inner-corners"></div>
 
-            <div style="display:flex; flex-direction:column; gap:3vh; width:100%; margin-top:-2vh;">
-                <div class="display-layer date-section">
-                    <div class="active" id="date">00-00-0000</div>
-                </div>
-                <div class="display-layer day-section">
-                    <div class="active" id="day">DAY</div>
-                </div>
+        <div style="display:flex; flex-direction:column; gap:3vh; width:100%; margin-top:-2vh;">
+            <div class="display-layer date-section">
+                <div class="active" id="date">00-00-0000</div>
             </div>
-
-            <div class="rule"></div>
-
-            <div class="display-layer time-section">
-                <div class="active" id="time">00:00:00 PM</div>
+            <div class="display-layer day-section">
+                <div class="active" id="day">DAY</div>
             </div>
+        </div>
 
-            <div class="rule"></div>
+        <div class="rule"></div>
 
-            <div class="info-wrapper">
-                <div class="info-active info-mission">MISSION IMPOSSIBLE : 161.3_KM/PH</div>
-                <div class="info-active" id="currentSpeed" onclick="editSpeed()">CURRENT SPEED : <span id="speedValue">116.3</span>_KM/PH</div>
-            </div>
+        <div class="display-layer time-section">
+            <div class="active" id="time">00:00:00 PM</div>
+        </div>
+
+        <div class="rule"></div>
+
+        <div class="info-wrapper">
+            <div class="info-active info-mission">MISSION IMPOSSIBLE : 161.3_KM/PH</div>
+            <div class="info-active" id="currentSpeed" onclick="editSpeed()">CURRENT SPEED : <span id="speedValue">116.3</span>_KM/PH</div>
         </div>
     </div>
 
     <script>
-        /* ── clock update ── */
         function updateClock() {
             const now = new Date();
             const day   = String(now.getDate()).padStart(2, '0');
@@ -372,43 +314,6 @@
                 `${String(hours).padStart(2,'0')}:${minutes}:${seconds} ${ampm}`;
         }
 
-        /* ── 3D mouse tilt ── */
-        const scene = document.getElementById('scene');
-        let targetX = 0, targetY = 0, currentX = 0, currentY = 0;
-        const MAX_TILT = 10; // degrees
-
-        document.addEventListener('mousemove', e => {
-            const cx = window.innerWidth  / 2;
-            const cy = window.innerHeight / 2;
-            targetY =  ((e.clientX - cx) / cx) * MAX_TILT;
-            targetX = -((e.clientY - cy) / cy) * MAX_TILT;
-        });
-
-        document.addEventListener('mouseleave', () => {
-            targetX = 0; targetY = 0;
-        });
-
-        /* ── gyro tilt for mobile ── */
-        if (window.DeviceOrientationEvent) {
-            window.addEventListener('deviceorientation', e => {
-                if (e.beta !== null && e.gamma !== null) {
-                    targetX = Math.max(-MAX_TILT, Math.min(MAX_TILT, e.beta  * 0.3));
-                    targetY = Math.max(-MAX_TILT, Math.min(MAX_TILT, e.gamma * 0.3));
-                }
-            });
-        }
-
-        /* ── smooth interpolation loop ── */
-        function animateScene() {
-            currentX += (targetX - currentX) * 0.07;
-            currentY += (targetY - currentY) * 0.07;
-            scene.style.transform =
-                `rotateX(${currentX.toFixed(3)}deg) rotateY(${currentY.toFixed(3)}deg)`;
-            requestAnimationFrame(animateScene);
-        }
-        animateScene();
-
-        /* ── fullscreen ── */
         function toggleFullscreen() {
             if (!document.fullscreenElement) {
                 document.documentElement.requestFullscreen().then(() => {
@@ -422,7 +327,6 @@
                 document.getElementById('fullscreenBtn').classList.remove('hidden');
         });
 
-        /* ── speed edit ── */
         function editSpeed() {
             const el = document.getElementById('speedValue');
             const val = prompt('Enter new speed (km/h):', el.innerText);
