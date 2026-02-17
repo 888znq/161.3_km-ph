@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digital Clock</title>
+    <title>Digital Clock Edge-to-Edge</title>
     <link href="https://fonts.cdnfonts.com/css/digital-7-mono" rel="stylesheet">
     
     <style>
@@ -16,91 +16,87 @@
             width: 1200px;
             height: 1920px;
             overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
+
         .clock-container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            /* Container sizing with safe margins */
-            width: 1160px;  /* 1200px - 40px margin */
-            height: 1880px; /* 1920px - 40px margin */
-            padding: 20px;
+            /* Distribute space evenly across the full height */
+            justify-content: space-evenly; 
+            width: 100%;
+            height: 100%;
+            padding: 20px; /* Minimal padding to prevent text touching physical bezel */
             box-sizing: border-box;
-            border: 4px solid #ff0000;
-            box-shadow: 
-                0 0 15px rgba(255, 0, 0, 0.5),
-                inset 0 0 15px rgba(255, 0, 0, 0.3);
-            border-radius: 10px;
+            /* Removed border and shadows for edge-to-edge look */
         }
+
         .display-layer {
             position: relative;
-            display: inline-block;
-            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             width: 100%;
+            text-align: center;
         }
+
         .active {
             position: relative;
             z-index: 2;
             color: #ff0000;
             font-style: italic;
-            text-shadow: none;
+            text-shadow: 0 0 20px rgba(255, 0, 0, 0.4); /* Added slight glow */
         }
+
         .date-section {
-            font-size: 90px; /* Reduced slightly to prevent edge touching */
-            letter-spacing: 5px;
-            margin-bottom: 40px;
-            margin-top: -60px;
+            font-size: 110px; /* Increased size */
+            letter-spacing: 10px;
             font-variant-numeric: tabular-nums;
         }
+
         .day-section {
-            font-size: 90px;
-            letter-spacing: 5px;
+            font-size: 110px; /* Increased size */
+            letter-spacing: 10px;
             text-transform: uppercase;
-            margin-bottom: 30px;
-            padding: 0;
             font-variant-numeric: tabular-nums;
         }
+
         .time-section {
-            /* Adjusted to ensure 12:00:00 PM fits without touching sides */
-            font-size: 170px; 
-            letter-spacing: 5px;
-            margin-bottom: 40px;
+            font-size: 220px; /* Massively increased size */
+            letter-spacing: 10px;
             line-height: 1;
         }
+
         .info-wrapper {
             display: flex;
             flex-direction: column;
-            align-items: flex-start; /* Aligned left but centered in container */
+            align-items: center; /* Centered for symmetrical edge-to-edge look */
             justify-content: center;
             width: 100%;
-            padding-left: 40px; /* Indent slightly from the border */
-            box-sizing: border-box;
-            margin-top: 20px;
-            gap: 20px;
+            gap: 30px;
+            margin-top: 50px;
+            border-top: 2px solid #330000; /* Subtle separator */
+            padding-top: 50px;
         }
         
         .info-active {
             color: #ff0000;
             font-style: italic;
-            /* Significantly reduced to prevent overlap of long strings */
-            font-size: 52px; 
+            font-size: 65px; /* Increased size */
             line-height: 1.4;
             white-space: pre;
             text-shadow: none;
             font-variant-numeric: tabular-nums;
-            letter-spacing: 2px;
+            letter-spacing: 4px;
         }
 
+        /* Fullscreen Button Styles */
         .fullscreen-btn {
             position: fixed;
-            top: 30px;
-            right: 30px;
+            top: 40px;
+            right: 40px;
             z-index: 1000;
-            background-color: rgba(255, 0, 0, 0.1);
+            background-color: rgba(0, 0, 0, 0.5);
             border: 2px solid #ff0000;
             color: #ff0000;
             font-family: 'Digital-7 Mono', monospace;
@@ -110,16 +106,25 @@
             transition: all 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 2px;
+            border-radius: 8px;
         }
 
         .fullscreen-btn:hover {
-            background-color: rgba(255, 0, 0, 0.4);
+            background-color: rgba(255, 0, 0, 0.2);
             box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
         }
 
         .fullscreen-btn.hidden {
             opacity: 0;
             pointer-events: none;
+        }
+
+        /* Span for speed value to make it easier to click */
+        #currentSpeed {
+            transition: color 0.2s;
+        }
+        #currentSpeed:hover {
+            text-shadow: 0 0 15px rgba(255, 0, 0, 0.8);
         }
     </style>
 </head>
@@ -130,30 +135,37 @@
 
     <div class="clock-container">
         
-        <div class="display-layer date-section">
-            <div class="active" id="date">00-00-0000</div>
-        </div>
-        <div class="display-layer day-section">
-            <div class="active" id="day">DAY</div>
+        <div style="display:flex; flex-direction:column; gap: 20px; width:100%;">
+            <div class="display-layer date-section">
+                <div class="active" id="date">00-00-0000</div>
+            </div>
+            <div class="display-layer day-section">
+                <div class="active" id="day">DAY</div>
+            </div>
         </div>
         
         <div class="display-layer time-section">
             <div class="active" id="time">00:00:00 PM</div>
         </div>
+
         <div class="info-wrapper">
             <div class="info-active">MISSION IMPOSSIBLE : 161.3_KM/PH</div>
             <div class="info-active" id="currentSpeed" onclick="editSpeed()" style="cursor: pointer;">CURRENT SPEED      : <span id="speedValue">116.3</span>_KM/PH</div>
         </div>
     </div>
+
     <script>
         function updateClock() {
             const now = new Date();
             const day = String(now.getDate()).padStart(2, '0');
             const month = String(now.getMonth() + 1).padStart(2, '0');
             const year = now.getFullYear();
+            
             document.getElementById('date').innerText = `${day}-${month}-${year}`;
+            
             const days = ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"];
             document.getElementById('day').innerText = days[now.getDay()];
+            
             let hours = now.getHours();
             const minutes = String(now.getMinutes()).padStart(2, '0');
             const seconds = String(now.getSeconds()).padStart(2, '0');
@@ -162,6 +174,7 @@
             hours = hours % 12;
             hours = hours ? hours : 12; 
             const strHours = String(hours).padStart(2, '0');
+            
             document.getElementById('time').innerText = `${strHours}:${minutes}:${seconds} ${ampm}`;
         }
 
